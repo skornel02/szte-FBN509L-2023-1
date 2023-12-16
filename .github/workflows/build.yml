@@ -4,9 +4,9 @@ env:
   NODE_VERSION: "18.17.1"
 
 on:
-  workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
   push:
     branches: [master]
+  workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
 
 jobs:
   build-and-deploy:
