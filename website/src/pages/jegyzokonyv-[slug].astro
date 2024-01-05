@@ -3,21 +3,20 @@ import type { GetStaticPaths } from "astro";
 import { getCollection } from "astro:content";
 import Layout from "../layouts/Layout.astro";
 import Navbar from "../components/Navbar.astro";
-import fs from "node:fs/promises";
 
 export const getStaticPaths = (async () => {
     const jegyzokonyvek = await getCollection("jegyzokonyv");
 
     const paths = [];
 
+    const htmls = import.meta.glob("/public/*.html");
+
     for (const jegyzokonyv of jegyzokonyvek) {
         let calculationsHtml = undefined;
         if (jegyzokonyv.data.calculationSrc) {
-            const url = new URL(
-                "../../public" + jegyzokonyv.data.calculationSrc,
-                import.meta.url,
-            );
-            calculationsHtml = await fs.readFile(url, "utf-8");
+            const html = await htmls['/public' + jegyzokonyv.data.calculationSrc]();
+            // @ts-expect-error
+            calculationsHtml = html.default({});
         }
 
         paths.push({
@@ -64,7 +63,9 @@ const { jegyzokonyv, calculationsHtml } = Astro.props;
 
         <div class="mockup-browser border border-base-300">
             <div class="mockup-browser-toolbar">
-                <div class="input border border-base-300">Számolások (Matlab export)</div>
+                <div class="input border border-base-300">
+                    Számolások (Matlab export)
+                </div>
             </div>
             <div set:html={calculationsHtml} />
         </div>

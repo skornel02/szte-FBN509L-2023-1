@@ -7,15 +7,15 @@ const jegyzokonyvek = await getCollection("jegyzokonyv");
 const options = jegyzokonyvek.map((jegyzokonyv) => {
     return {
         value: jegyzokonyv.id,
-        href: `jegyzokonyv-${jegyzokonyv.id}`,
-        selected: currentPage.endsWith(`${jegyzokonyv.id}`),
+        href: `${import.meta.env.BASE_URL}/jegyzokonyv-${jegyzokonyv.id}`,
+        selected: currentPage.endsWith(`-${jegyzokonyv.id}`) || currentPage.endsWith(`-${jegyzokonyv.id}/`),
     };
 });
 
 const noneSelected = options.every((option) => !option.selected);
 ---
 
-<div class="navbar bg-base-100">
+<nav class="navbar bg-base-100">
     <div class="navbar-start">
         <div class="dropdown">
             <div tabindex="0" role="button" class="btn btn-ghost lg:hidden">
@@ -75,7 +75,7 @@ const noneSelected = options.every((option) => !option.selected);
             <li>
                 <details>
                     <summary>Jegyzőkönyvek</summary>
-                    <ul class="p-2">
+                    <ul class="p-2 z-50">
                         {
                             options.map((jegyzokonyv) => (
                                 <li>
@@ -95,4 +95,4 @@ const noneSelected = options.every((option) => !option.selected);
             </li>
         </ul>
     </div>
-</div>
+</nav>
