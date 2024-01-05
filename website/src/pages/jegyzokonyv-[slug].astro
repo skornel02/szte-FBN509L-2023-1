@@ -14,7 +14,8 @@ export const getStaticPaths = (async () => {
     for (const jegyzokonyv of jegyzokonyvek) {
         let calculationsHtml = undefined;
         if (jegyzokonyv.data.calculationSrc) {
-            const html = await htmls['/public' + jegyzokonyv.data.calculationSrc]();
+            const html =
+                await htmls["/public" + jegyzokonyv.data.calculationSrc]();
             // @ts-expect-error
             calculationsHtml = html.default({});
         }
@@ -51,12 +52,23 @@ const { jegyzokonyv, calculationsHtml } = Astro.props;
                 <div class="input border border-base-300">Jegyzőkönyv</div>
             </div>
             <div class="flex justify-center border-t border-base-300">
-                <embed
-                    src={import.meta.env.BASE_URL +
-                        "/" +
-                        jegyzokonyv.data.pdfSrc}
+                <object
+                    data={`${import.meta.env.BASE_URL}/${
+                        jegyzokonyv.data.pdfSrc
+                    }`}
                     type="application/pdf"
-                />
+                >
+                    <p>
+                        Ez a készülék nem támogatja a beépített PDF nézegetőt!
+                    </p>
+                    <a
+                        href={`${import.meta.env.BASE_URL}/${
+                            jegyzokonyv.data.pdfSrc
+                        }`}
+                        target="_blank"
+                        class="link">Katt ide a megnyitásához!</a
+                    >
+                </object>
             </div>
         </div>
         <div class="divider">Számítások</div>
@@ -84,7 +96,19 @@ const { jegyzokonyv, calculationsHtml } = Astro.props;
                             </div>
                         </div>
                         <div class="flex justify-center border-t border-base-300">
-                            <embed src={taskPdfSrc} type="application/pdf" />
+                            <object data={taskPdfSrc} type="application/pdf">
+                                <p>
+                                    Ez a készülék nem támogatja a beépített PDF
+                                    nézegetőt!
+                                </p>
+                                <a
+                                    href={taskPdfSrc}
+                                    target="_blank"
+                                    class="link"
+                                >
+                                    Katt ide a megnyitásához!
+                                </a>
+                            </object>
                         </div>
                     </div>
                 ))
@@ -116,7 +140,7 @@ const { jegyzokonyv, calculationsHtml } = Astro.props;
         max-width: 1024px;
     }
 
-    embed {
+    object {
         border: none;
         width: 100%;
         height: 90vh;
