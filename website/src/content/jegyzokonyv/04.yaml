@@ -1,0 +1,4 @@
+pdfSrc: '/labor_4_jegyzokonyv.pdf'
+calculationSrc: '/labor_4_szamitasok.html'
+taskPdfSrcs:
+  - 'https://titan.physx.u-szeged.hu/~opthome/elabor/ELab_4.pdf'
